@@ -33,5 +33,13 @@ jobs:
     - name: Run unit tests
       run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalTest
 
+    - name: Compile Integration Tests
+      run: javac -cp .:lib/junit-platform-console-standalone.jar SistemaHospital.java SistemaHospitalIntegrationTest.java
+
+    - name: Run Integration Tests
+      run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalIntegrationTest
+
+
+
 
 
