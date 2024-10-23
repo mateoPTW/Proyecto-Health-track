@@ -64,7 +64,6 @@ class Hospital {
     public Hospital(String nombre) {
         this.nombre = nombre;
         this.doctores = new ArrayList<>();
-        
         this.pacientes = new ArrayList<>();
     }
 
@@ -74,7 +73,6 @@ class Hospital {
     }
 
     public void registrarPaciente(Paciente paciente) {
-        // ERROR: Intento de agregar a una lista no inicializada si 'pacientes' fuera null
         pacientes.add(paciente);
         System.out.println("Paciente registrado: " + paciente.getNombre());
     }
@@ -95,6 +93,13 @@ class Hospital {
         for (Doctor doctor : doctores) {
             System.out.println(doctor);
         }
+    }
+     public List<Doctor> getDoctores() {
+        return doctores;
+    }
+
+    public List<Paciente> getPacientes() {
+        return pacientes;
     }
 }
 
