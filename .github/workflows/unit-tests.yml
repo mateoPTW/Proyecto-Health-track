@@ -39,6 +39,12 @@ jobs:
     - name: Run Integration Tests
       run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalIntegrationTest
 
+    - name: Compile Performance Tests
+      run: javac -cp .:lib/junit-platform-console-standalone.jar SistemaHospital.java SistemaHospitalPerformanceTest.java
+
+    - name: Run Performance Tests
+      run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalPerformanceTest
+
 
 
 
