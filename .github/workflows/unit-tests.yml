@@ -22,8 +22,18 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
+    - name: Install dependencies
+      run: mvn install --file pom.xml
+
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Run unit tests
-      run: mvn test
+    - name: Run unit tests one by one
+      run: |
+        mvn -Dtest=NombreDeTuClaseDePrueba1 test
+        mvn -Dtest=NombreDeTuClaseDePrueba2 test
+        mvn -Dtest=NombreDeTuClaseDePrueba3 test
+        # Agrega más líneas según sea necesario para tus otras pruebas
+
+
+
