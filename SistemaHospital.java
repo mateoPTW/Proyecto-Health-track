@@ -49,8 +49,7 @@ class Paciente {
         return enfermedad;
     }
 
-    // ERROR: Faltaba el override del método toString()
-    // @Override
+   @Override
     public String toString() {
         return "Paciente: " + nombre + ", Edad: " + edad + ", Enfermedad: " + enfermedad;
     }
@@ -65,15 +64,12 @@ class Hospital {
     public Hospital(String nombre) {
         this.nombre = nombre;
         this.doctores = new ArrayList<>();
-        // ERROR: Inicialización incorrecta de la lista de pacientes
-        // pacientes = null;
+        
         this.pacientes = new ArrayList<>();
     }
 
     public void registrarDoctor(Doctor doctor) {
-        doctores.add(doctor);
-        // ERROR: Sintaxis incorrecta, falta la llamada al método getNombre()
-        // System.out.println("Doctor registrado: " + doctor);
+        doctores.add(doctor);         
         System.out.println("Doctor registrado: " + doctor.getNombre());
     }
 
