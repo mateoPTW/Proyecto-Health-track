@@ -1,4 +1,4 @@
-name: Java CI with Maven
+name: Java CI without Maven
 
 on:
   push:
@@ -16,26 +16,18 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: List files
-      run: ls -R  # Esto mostrará todos los archivos y carpetas, útil para depuración
-
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '11'
 
-    - name: Install dependencies
-      run: mvn install --file pom.xml  # Asegúrate de que la ruta sea correcta
+    - name: Compile Java code
+      run: javac SistemaHospital.java
 
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml  # Cambia la ruta si es necesario
+    - name: Run unit tests
+      run: java SistemaHospitalTest # Asegúrate de tener un archivo de pruebas para tu clase
 
-    - name: Run unit tests one by one
-      run: |
-        mvn -Dtest=NombreDeTuClaseDePrueba1 test
-        mvn -Dtest=NombreDeTuClaseDePrueba2 test
-        mvn -Dtest=NombreDeTuClaseDePrueba3 test
 
 
 
