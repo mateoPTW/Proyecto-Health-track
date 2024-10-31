@@ -28,24 +28,13 @@ jobs:
         curl -o lib/junit-platform-console-standalone.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.2/junit-platform-console-standalone-1.8.2.jar
 
     - name: Compile Java code
-      run: javac -cp .:lib/junit-platform-console-standalone.jar SistemaHospital.java SistemaHospitalTest.java
+      run: javac -cp .:lib/junit-platform-console-standalone.jar SistemaHospital.java SistemaHospitalTest.java SistemaHospitalIntegrationTest.java SistemaHospitalPerformanceTest.java
 
     - name: Run unit tests
       run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalTest
 
-    - name: Compile Integration Tests
-      run: javac -cp .:lib/junit-platform-console-standalone.jar SistemaHospital.java SistemaHospitalIntegrationTest.java
-
     - name: Run Integration Tests
       run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalIntegrationTest
 
-    - name: Compile Performance Tests
-      run: javac -cp .:lib/junit-platform-console-standalone.jar SistemaHospital.java SistemaHospitalPerformanceTest.java
-
     - name: Run Performance Tests
       run: java -jar lib/junit-platform-console-standalone.jar -cp . --select-class SistemaHospitalPerformanceTest
-
-
-
-
-
