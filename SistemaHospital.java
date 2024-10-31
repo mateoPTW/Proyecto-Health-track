@@ -78,6 +78,13 @@ class Hospital {
         this.doctores = new ArrayList<>();
         this.pacientes = new ArrayList<>();
     }
+    public List<Doctor> getDoctores() {
+        return doctores;
+    }
+
+    public List<Paciente> getPacientes() {
+        return pacientes;
+    }
 
     public void registrarDoctor(Doctor doctor) {
         doctores.add(doctor);         
