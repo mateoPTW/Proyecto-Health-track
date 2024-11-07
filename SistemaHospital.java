@@ -140,10 +140,25 @@ class Hospital {
         Doctor doctor = buscarDoctorPorNombre(nombreDoctor);
 
         if (paciente != null && doctor != null) {
+            if (paciente.getDoctorAsignado() != null) {
+                System.out.println("El paciente ya tiene un doctor asignado. Desasignando al doctor actual...");
+                paciente.desasignarDoctor();
+            }
             paciente.asignarDoctor(doctor);
             System.out.println("Doctor " + doctor.getNombre() + " asignado al paciente " + paciente.getNombre());
         } else {
             System.out.println("Doctor o paciente no encontrado.");
+        }
+    }
+
+    public void desasignarDoctorDePaciente(String nombrePaciente) {
+        Paciente paciente = buscarPacientePorNombre(nombrePaciente);
+
+        if (paciente != null && paciente.getDoctorAsignado() != null) {
+            System.out.println("Desasignando al doctor " + paciente.getDoctorAsignado().getNombre() + " del paciente " + paciente.getNombre());
+            paciente.desasignarDoctor();
+        } else {
+            System.out.println("No se encontró el paciente o no tiene un doctor asignado.");
         }
     }
 
@@ -187,10 +202,7 @@ class Hospital {
 
         Doctor doctorConMasPacientes = encontrarDoctorConMasPacientes();
         if (doctorConMasPacientes != null) {
-            System.out.println("El doctor con más pacientes asignados es: " + doctorConMasPacientes.getNombre() +
-                               " con " + doctorConMasPacientes.getPacientesAsignados() + " pacientes.");
-        } else {
-            System.out.println("No hay doctores con pacientes asignados.");
+            System.out.println("El doctor con más pacientes asignados es: " + doctorConMasPacientes.getNombre() + " con " + doctorConMasPacientes.getPacientesAsignados() + " pacientes.");
         }
     }
 
@@ -223,17 +235,9 @@ public class SistemaHospital {
         hospital.registrarPaciente(paciente1);
         hospital.registrarPaciente(paciente2);
 
-        // Asignar doctor a paciente
+        // Asignar y desasignar doctores
         hospital.asignarDoctorAPaciente("Carlos López", "Dr. Juan Pérez");
-
-        // Mostrar el doctor con más pacientes
-        Doctor doctorConMasPacientes = hospital.encontrarDoctorConMasPacientes();
-        if (doctorConMasPacientes != null) {
-            System.out.println("El doctor con más pacientes asignados es: " + doctorConMasPacientes.getNombre() +
-                               " con " + doctorConMasPacientes.getPacientesAsignados() + " pacientes.");
-        } else {
-            System.out.println("No hay doctores con pacientes asignados.");
-        }
+        hospital.desasignarDoctorDePaciente("Carlos López");
 
         // Resumen del hospital
         hospital.resumenHospital();
