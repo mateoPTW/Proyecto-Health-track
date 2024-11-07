@@ -7,10 +7,12 @@ import java.util.Map;
 class Doctor {
     private String nombre;
     private String especialidad;
+    private int pacientesAsignados;
 
     public Doctor(String nombre, String especialidad) {
         this.nombre = nombre;
         this.especialidad = especialidad;
+        this.pacientesAsignados = 0;
     }
 
     public String getNombre() {
@@ -19,6 +21,20 @@ class Doctor {
 
     public String getEspecialidad() {
         return especialidad;
+    }
+
+    public int getPacientesAsignados() {
+        return pacientesAsignados;
+    }
+
+    public void incrementarPacientesAsignados() {
+        this.pacientesAsignados++;
+    }
+
+    public void decrementarPacientesAsignados() {
+        if (this.pacientesAsignados > 0) {
+            this.pacientesAsignados--;
+        }
     }
 
     @Override
@@ -58,6 +74,14 @@ class Paciente {
 
     public void asignarDoctor(Doctor doctor) {
         this.doctorAsignado = doctor;
+        doctor.incrementarPacientesAsignados();
+    }
+
+    public void desasignarDoctor() {
+        if (this.doctorAsignado != null) {
+            this.doctorAsignado.decrementarPacientesAsignados();
+            this.doctorAsignado = null;
+        }
     }
 
     @Override
@@ -78,6 +102,7 @@ class Hospital {
         this.doctores = new ArrayList<>();
         this.pacientes = new ArrayList<>();
     }
+
     public List<Doctor> getDoctores() {
         return doctores;
     }
@@ -87,7 +112,7 @@ class Hospital {
     }
 
     public void registrarDoctor(Doctor doctor) {
-        doctores.add(doctor);         
+        doctores.add(doctor);
         System.out.println("Doctor registrado: " + doctor.getNombre());
     }
 
@@ -113,7 +138,7 @@ class Hospital {
     public void asignarDoctorAPaciente(String nombrePaciente, String nombreDoctor) {
         Paciente paciente = buscarPacientePorNombre(nombrePaciente);
         Doctor doctor = buscarDoctorPorNombre(nombreDoctor);
-        
+
         if (paciente != null && doctor != null) {
             paciente.asignarDoctor(doctor);
             System.out.println("Doctor " + doctor.getNombre() + " asignado al paciente " + paciente.getNombre());
@@ -122,25 +147,18 @@ class Hospital {
         }
     }
 
-    public List<Paciente> buscarPacientesPorEnfermedad(String enfermedad) {
-        List<Paciente> pacientesConEnfermedad = new ArrayList<>();
-        for (Paciente paciente : pacientes) {
-            if (paciente.getEnfermedad().equalsIgnoreCase(enfermedad)) {
-                pacientesConEnfermedad.add(paciente);
+    public Doctor encontrarDoctorConMasPacientes() {
+        Doctor doctorConMasPacientes = null;
+        int maxPacientes = 0;
+
+        for (Doctor doctor : doctores) {
+            if (doctor.getPacientesAsignados() > maxPacientes) {
+                maxPacientes = doctor.getPacientesAsignados();
+                doctorConMasPacientes = doctor;
             }
         }
-        return pacientesConEnfermedad;
-    }
 
-    public Map<String, Integer> contarDoctoresPorEspecialidad() {
-        Map<String, Integer> conteoPorEspecialidad = new HashMap<>();
-        for (Doctor doctor : doctores) {
-            conteoPorEspecialidad.put(
-                doctor.getEspecialidad(), 
-                conteoPorEspecialidad.getOrDefault(doctor.getEspecialidad(), 0) + 1
-            );
-        }
-        return conteoPorEspecialidad;
+        return doctorConMasPacientes;
     }
 
     public Paciente buscarPacientePorNombre(String nombre) {
@@ -166,6 +184,25 @@ class Hospital {
         System.out.println("Número de doctores: " + doctores.size());
         System.out.println("Número de pacientes: " + pacientes.size());
         System.out.println("Doctores por especialidad: " + contarDoctoresPorEspecialidad());
+
+        Doctor doctorConMasPacientes = encontrarDoctorConMasPacientes();
+        if (doctorConMasPacientes != null) {
+            System.out.println("El doctor con más pacientes asignados es: " + doctorConMasPacientes.getNombre() +
+                               " con " + doctorConMasPacientes.getPacientesAsignados() + " pacientes.");
+        } else {
+            System.out.println("No hay doctores con pacientes asignados.");
+        }
+    }
+
+    public Map<String, Integer> contarDoctoresPorEspecialidad() {
+        Map<String, Integer> conteoPorEspecialidad = new HashMap<>();
+        for (Doctor doctor : doctores) {
+            conteoPorEspecialidad.put(
+                doctor.getEspecialidad(),
+                conteoPorEspecialidad.getOrDefault(doctor.getEspecialidad(), 0) + 1
+            );
+        }
+        return conteoPorEspecialidad;
     }
 }
 
@@ -186,18 +223,16 @@ public class SistemaHospital {
         hospital.registrarPaciente(paciente1);
         hospital.registrarPaciente(paciente2);
 
-        // Mostrar doctores y pacientes
-        hospital.mostrarDoctores();
-        hospital.mostrarPacientes();
-
         // Asignar doctor a paciente
         hospital.asignarDoctorAPaciente("Carlos López", "Dr. Juan Pérez");
 
-        // Buscar pacientes por enfermedad
-        System.out.println("Pacientes con gripe:");
-        List<Paciente> pacientesConGripe = hospital.buscarPacientesPorEnfermedad("Gripe");
-        for (Paciente paciente : pacientesConGripe) {
-            System.out.println(paciente);
+        // Mostrar el doctor con más pacientes
+        Doctor doctorConMasPacientes = hospital.encontrarDoctorConMasPacientes();
+        if (doctorConMasPacientes != null) {
+            System.out.println("El doctor con más pacientes asignados es: " + doctorConMasPacientes.getNombre() +
+                               " con " + doctorConMasPacientes.getPacientesAsignados() + " pacientes.");
+        } else {
+            System.out.println("No hay doctores con pacientes asignados.");
         }
 
         // Resumen del hospital
